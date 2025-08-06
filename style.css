@@ -1,0 +1,12 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #212121;
+  color: whitesmoke;
+}
+.container {
+  margin: 0 auto;
+  background-color: white;
+  text-align: center;
+}
