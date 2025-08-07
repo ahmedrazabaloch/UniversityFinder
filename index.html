@@ -6,9 +6,9 @@
     <title>Global University Finder</title>
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="container">
-      <!-- Nav -->
       <nav class="navBar" aria-label="Primary">
         <div class="logo">
           <a href="#">
@@ -26,13 +26,11 @@
         </ul>
       </nav>
 
-      <!-- Hero -->
       <section class="hero-card">
         <div class="head">
           <h1>Global University Finder</h1>
           <p>Find your dream university with a clean, fast search.</p>
 
-          <!-- Unified search control -->
           <div class="search-wrap">
             <form
               class="search"
@@ -40,7 +38,6 @@
               aria-label="Search universities"
               onsubmit="return false;"
             >
-              <!-- Search icon inside the input area -->
               <div class="icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <circle
@@ -61,7 +58,6 @@
                 </svg>
               </div>
 
-              <!-- Text input -->
               <input
                 id="userInput"
                 type="text"
@@ -70,7 +66,6 @@
                 aria-label="Search by university name"
               />
 
-              <!-- Dropdown embedded inside the same control -->
               <label class="select" for="dropDown" aria-label="Select country">
                 <select name="country" id="dropDown" aria-label="Country">
                   <option value="">All countries</option>
@@ -81,7 +76,6 @@
         </div>
       </section>
 
-      <!-- Results -->
       <section class="results-section" aria-live="polite">
         <div class="results-meta">
           <span id="result-count">Showing 0 results</span>
@@ -99,7 +93,127 @@
       </section>
     </div>
 
-    <!-- Your existing script will still work (IDs preserved) -->
+    <script>
+      (function () {
+        const refs = {
+          grid: document.getElementById("results"),
+          empty: document.getElementById("empty"),
+          count: document.getElementById("result-count"),
+        };
+
+        function setResultCount(n) {
+          if (!refs.count) return;
+          refs.count.textContent = `Showing ${n} result${n === 1 ? "" : "s"}`;
+        }
+
+        function toggleEmpty(show) {
+          if (!refs.empty) return;
+          refs.empty.classList.toggle("is-hidden", !show);
+          refs.empty.hidden = !show; // double insurance
+        }
+
+        function clearResults() {
+          if (refs.grid) refs.grid.innerHTML = "";
+        }
+
+        function makeLink(url) {
+          const a = document.createElement("a");
+          a.href = url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.textContent = url.replace(/^https?:\/\//, "");
+          return a;
+        }
+
+        function renderUniversities(list = []) {
+          if (!refs.grid) return;
+
+          clearResults();
+
+          if (!Array.isArray(list) || list.length === 0) {
+            toggleEmpty(true);
+            setResultCount(0);
+            return;
+          }
+
+          toggleEmpty(false);
+          setResultCount(list.length);
+
+          list.forEach((u) => {
+            const name = u.name || "Unnamed University";
+            const country = u.country || "";
+            const code = (u.alpha_two_code || "").toString().toUpperCase();
+            const pages = Array.isArray(u.web_pages)
+              ? u.web_pages
+              : u.website
+              ? [u.website]
+              : [];
+            const primary = pages[0];
+
+            const card = document.createElement("article");
+            card.className = "uni-card";
+
+            const title = document.createElement("h3");
+            title.className = "uni-name";
+            title.textContent = name;
+
+            const metaRow = document.createElement("div");
+            metaRow.className = "meta-row";
+
+            const badge = document.createElement("span");
+            badge.className = "badge";
+            badge.textContent = country
+              ? code
+                ? `${country} · ${code}`
+                : country
+              : "—";
+
+            const links = document.createElement("div");
+            links.className = "links";
+            if (primary) {
+              links.appendChild(makeLink(primary));
+            }
+
+            metaRow.appendChild(badge);
+            card.appendChild(title);
+            card.appendChild(metaRow);
+            card.appendChild(links);
+            refs.grid.appendChild(card);
+          });
+        }
+
+        // Demo render so you can see boxes immediately
+        document.addEventListener("DOMContentLoaded", () => {
+          const demo = [
+            {
+              name: "University of Karachi",
+              country: "Pakistan",
+              alpha_two_code: "PK",
+              web_pages: ["https://uok.edu.pk"],
+            },
+            {
+              name: "MIT",
+              country: "United States",
+              alpha_two_code: "US",
+              web_pages: ["http://web.mit.edu"],
+            },
+            {
+              name: "University of Tokyo",
+              country: "Japan",
+              alpha_two_code: "JP",
+              web_pages: ["https://www.u-tokyo.ac.jp"],
+            },
+          ];
+          renderUniversities(demo);
+        });
+
+        // Expose safe globals for your app.js
+        window.renderUniversities = renderUniversities;
+        window.setResultCount = setResultCount;
+        window.clearResults = clearResults;
+      })();
+    </script>
+
     <script src="app.js"></script>
   </body>
 </html>

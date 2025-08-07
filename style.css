@@ -1,17 +1,16 @@
 :root {
-  --bg: #0f172a; /* slate-900 */
-  --card: #0b1224; /* deep card */
-  --surface: #101a33; /* input surface */
-  --text: #e6e7eb; /* base text */
-  --muted: #97a0b5; /* muted text */
-  --brand: #5b8cff; /* brand accent */
-  --brand-2: #7dd3fc; /* secondary accent */
+  --bg: #0f172a;
+  --card: #0b1224;
+  --surface: #101a33;
+  --text: #e6e7eb;
+  --muted: #97a0b5;
+  --brand: #5b8cff;
+  --brand-2: #7dd3fc;
   --ring: rgba(91, 140, 255, 0.45);
   --radius: 14px;
   --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
   --shadow-2: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
-
 * {
   box-sizing: border-box;
 }
@@ -21,8 +20,7 @@ body {
 }
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, "Helvetica Neue",
-    Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Arial;
   color: var(--text);
   background: radial-gradient(
       1200px 600px at 10% -10%,
@@ -36,20 +34,15 @@ body {
     ),
     linear-gradient(180deg, #0a0f1f, #0f172a 40%, #0f172a 100%);
 }
-
-/* Container */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 20px clamp(16px, 3vw, 28px);
 }
-
-/* Nav */
 .navBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: transparent;
   padding: 8px 0;
 }
 .logo a {
@@ -100,14 +93,27 @@ body {
   transform: scaleX(1);
 }
 
-/* Hero */
+.hero-card {
+  margin: 1.5rem auto 0 auto;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: var(--radius);
+  padding: clamp(18px, 4vw, 28px);
+  box-shadow: var(--shadow-1);
+  max-width: 900px;
+  backdrop-filter: blur(6px);
+}
 .head {
   text-align: center;
   margin: clamp(24px, 4vw, 40px) auto;
   padding: clamp(12px, 2vw, 20px);
 }
 .head h1 {
-  margin: 0 0 8px 0;
+  margin: 0 0 8px;
   font-size: clamp(28px, 4.2vw, 48px);
   letter-spacing: 0.2px;
   background: linear-gradient(90deg, #fff, #bcd3ff 55%, #a7f3d0 100%);
@@ -116,12 +122,11 @@ body {
   color: transparent;
 }
 .head p {
-  margin: 0 0 26px 0;
+  margin: 0 0 26px;
   color: var(--muted);
   font-size: clamp(14px, 2.2vw, 18px);
 }
 
-/* Search group (single unified control) */
 .search-wrap {
   display: flex;
   justify-content: center;
@@ -143,7 +148,6 @@ body {
   border-color: var(--ring);
   box-shadow: 0 0 0 4px var(--ring), var(--shadow-1);
 }
-
 .search .icon {
   width: 44px;
   height: 44px;
@@ -162,8 +166,6 @@ body {
   stroke: #c9d4ff;
   opacity: 0.9;
 }
-
-/* Text input */
 #userInput {
   height: 44px;
   width: 100%;
@@ -178,7 +180,6 @@ body {
   color: #9aa6c1;
 }
 
-/* Select embedded inside same control */
 .select {
   position: relative;
   height: 44px;
@@ -196,22 +197,17 @@ body {
 }
 #dropDown {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   border: 0;
   outline: none;
   background: transparent;
   color: var(--text);
   font-size: 14px;
-  padding: 0;
-  margin: 0;
   height: 100%;
 }
 #dropDown option {
-  color: #0f172a;
-} /* native list */
-
-/* Custom chevron */
+  color: var(--text);
+  background-color: #0b1224;
+}
 .select::after {
   content: "";
   position: absolute;
@@ -226,23 +222,6 @@ body {
   opacity: 0.9;
 }
 
-/* Card around hero for contrast */
-.hero-card {
-  margin: 0 auto;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.04),
-    rgba(255, 255, 255, 0.02)
-  );
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: var(--radius);
-  padding: clamp(18px, 4vw, 28px);
-  box-shadow: var(--shadow-1);
-  max-width: 900px;
-  backdrop-filter: blur(6px);
-}
-
-/* Results section */
 .results-section {
   margin-top: 22px;
 }
@@ -262,7 +241,6 @@ body {
   gap: 16px;
 }
 
-/* University card */
 .uni-card {
   background: linear-gradient(180deg, #0c142a, #0b1224 60%);
   border: 1px solid rgba(148, 163, 184, 0.16);
@@ -319,7 +297,6 @@ body {
   border-bottom-style: solid;
 }
 
-/* Empty state */
 .empty {
   margin-top: 14px;
   color: var(--muted);
@@ -329,8 +306,10 @@ body {
   padding: 16px;
   text-align: center;
 }
+.is-hidden {
+  display: none !important;
+}
 
-/* Small screens */
 @media (max-width: 560px) {
   .search {
     grid-template-columns: 40px 1fr auto;
@@ -353,7 +332,6 @@ body {
   }
 }
 
-/* A11y focus */
 :focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: 2px;
