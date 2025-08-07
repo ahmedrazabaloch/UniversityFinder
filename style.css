@@ -203,10 +203,12 @@ body {
   color: var(--text);
   font-size: 14px;
   height: 100%;
+  cursor: pointer;
 }
-#dropDown option {
+#dropDown > option {
   color: var(--text);
   background-color: #0b1224;
+  cursor: pointer !important;
 }
 .select::after {
   content: "";
