@@ -1,25 +1,31 @@
 let url = "http://universities.hipolabs.com/search";
 let dropDown = document.querySelector("#dropDown");
+let defaultCountry = "Pakistan";
 
-let getUnilist = async () => {
+let getUniListForDropDown = async () => {
   try {
     let res = await fetch(url);
-    let resData = await res.json();
-
+    let data = await res.json();
     let addedCountries = new Set();
 
-    for (let data of resData) {
-      if (!addedCountries.has(data.country)) {
-        let option = document.createElement("option");
-        option.innerText = data.country;
-        option.value = data.country;
+    for (const uni of data) {
+      const country = uni.country?.trim();
+      if (country && !addedCountries.has(country)) {
+        const option = document.createElement("option");
+        option.value = country;
+        option.textContent = country;
+
+        if (country === defaultCountry) {
+          option.selected = true;
+        }
+
         dropDown.appendChild(option);
-        addedCountries.add(data.country);
+        addedCountries.add(country);
       }
     }
   } catch (error) {
-    console.log("Error -->", error);
+    console.log("Filed to Fetch the data", error);
   }
 };
 
-// getUnilist();
+getUniListForDropDown();
