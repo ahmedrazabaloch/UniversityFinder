@@ -3,7 +3,7 @@ let universityData = [];
 async function countryList() {
   try {
     const res = await fetch(
-      "http://universities.hipolabs.com/search?country=pakistan"
+      "http://universities.hipolabs.com/search?country=nipal"
     );
     const data = await res.json();
     universityData = data;
@@ -29,14 +29,16 @@ async function countryList() {
   }
 }
 
-countryList();
+// countryList();
 
 let resultCard = document.querySelector("#results");
 let resultNum = document.querySelector("#result-count");
+let emptyDiv = document.querySelector(".empty");
 
 let uniCard = () => {
+  emptyDiv.style.display = "none";
   resultCard.innerHTML = "";
-  resultNum.innerHTML= `Showing ${universityData?.length} results`
+  resultNum.innerHTML = `Showing ${universityData?.length} results`;
   for (const data of universityData) {
     resultCard.innerHTML += `
       <article class="uni-card">
