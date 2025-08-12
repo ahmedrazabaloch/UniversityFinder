@@ -132,11 +132,9 @@ body {
   justify-content: center;
 }
 .search {
-  width: min(760px, 100%);
-  display: grid;
-  grid-template-columns: 44px 1fr auto;
+  display: flex;
   align-items: center;
-  gap: 10px;
+  width: min(760px, 100%);
   background: linear-gradient(180deg, var(--surface), #0b1530);
   border: 1px solid rgba(148, 163, 184, 0.18);
   border-radius: 999px;
@@ -149,16 +147,13 @@ body {
   box-shadow: 0 0 0 4px var(--ring), var(--shadow-1);
 }
 .search .icon {
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   border-radius: 999px;
   display: grid;
   place-items: center;
-  background: radial-gradient(
-    120% 120% at 0% 0%,
-    rgba(91, 140, 255, 0.18),
-    transparent 50%
-  );
+  background: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
 }
 .search .icon img {
   width: 25px;
@@ -172,27 +167,12 @@ body {
   background: transparent;
   color: var(--text);
   font-size: 16px;
-  padding: 0 2px;
+  padding: 0 12px;
 }
 #userInput::placeholder {
   color: #9aa6c1;
 }
 
-.select {
-  position: relative;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  padding: 0 38px 0 12px;
-  border-radius: 999px;
-  box-shadow: var(--shadow-2) inset;
-}
-.select:focus-within {
-  border-color: var(--ring);
-  box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.2) inset, var(--shadow-2);
-}
 #dropDown {
   appearance: none;
   border: 0;
@@ -207,19 +187,6 @@ body {
   color: var(--text);
   background-color: #0b1224;
   cursor: pointer !important;
-}
-.select::after {
-  content: "";
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  pointer-events: none;
-  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b6c2df' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>")
-    center/12px 12px no-repeat;
-  opacity: 0.9;
 }
 
 .results-section {
@@ -242,6 +209,10 @@ body {
 }
 
 .uni-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 7px;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.04),
@@ -285,6 +256,7 @@ body {
   padding: 6px 10px;
   font-size: 12px;
   line-height: 1;
+  cursor: pointer;
 }
 .links {
   display: flex;
@@ -325,8 +297,7 @@ body {
     width: 40px;
     height: 40px;
   }
-  #userInput,
-  .select {
+  #userInput {
     height: 40px;
   }
   .navBar ul {

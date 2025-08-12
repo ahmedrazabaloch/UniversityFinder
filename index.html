@@ -38,6 +38,13 @@
               aria-label="Search universities"
               onsubmit="return false;"
             >
+              <input
+                id="userInput"
+                type="text"
+                placeholder="Search universities by country name"
+                autocomplete="off"
+                aria-label="Search by university country name"
+              />
               <div class="icon" aria-hidden="true">
                 <img
                   src="icons/search-icon.png"
@@ -45,23 +52,10 @@
                   alt="search-icon"
                 />
               </div>
-
-              <input
-                id="userInput"
-                type="text"
-                placeholder="Search universities by name"
-                autocomplete="off"
-                aria-label="Search by university name"
-              />
-
-              <label class="select" for="dropDown" aria-label="Select country">
-                <select name="country" id="dropDown" aria-label="Country">
-                  <option value="">All countries</option>
-                </select>
-              </label>
             </form>
           </div>
         </div>
+        <div class="badges meta-row"></div>
       </section>
 
       <section class="results-section" aria-live="polite">

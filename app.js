@@ -1,62 +1,131 @@
 let universityData = [];
 
-async function countryList() {
+// Function to fetch universities for a given country
+async function countryList(country) {
   try {
     const res = await fetch(
-      "http://universities.hipolabs.com/search?country=nipal"
+      `http://universities.hipolabs.com/search?country=${encodeURIComponent(
+        country
+      )}`
     );
     const data = await res.json();
     universityData = data;
 
-    console.log("Data-->", data);
-
-    const addedCountries = new Set();
-
-    for (const uni of data) {
-      const country = uni.country?.trim();
-      if (country && !addedCountries.has(country)) {
-        const option = document.createElement("option");
-        option.value = country;
-        option.textContent = country;
-        if (country === "Pakistan") option.selected = true;
-        dropDown.appendChild(option);
-        addedCountries.add(country);
-      }
-    }
-    uniCard();
+    populateCountryState(data);
+    renderUniCards();
   } catch (error) {
-    console.log("Failed to fetch data:", error);
+    console.error("Failed to fetch data:", error);
+    showEmptyMessage("Unable to fetch data. Please try again.");
   }
 }
 
-// countryList();
+// Populate dropdown without duplicates
+function populateCountryState(data) {
+  const addedCountries = new Set();
+  const badges = document.querySelector(".badges");
+  console.log(data);
 
-let resultCard = document.querySelector("#results");
-let resultNum = document.querySelector("#result-count");
-let emptyDiv = document.querySelector(".empty");
+  badges.innerHTML = "";
 
-let uniCard = () => {
+  for (const uni of data) {
+    const stateProvince = uni?.["state-province"];
+    if (stateProvince && !addedCountries.has(stateProvince)) {
+      const stateBadge = document.createElement("span");
+      stateBadge.textContent = stateProvince;
+      stateBadge.setAttribute("class", "badge");
+      badges.appendChild(stateBadge);
+      addedCountries.add(stateProvince);
+    }
+  }
+}
+
+// Handle search input
+const searchIcon = document.querySelector(".icon");
+const userInput = document.querySelector("#userInput");
+
+// Function to handle search
+function handleSearch() {
+  const value = userInput.value.trim();
+  if (value) {
+    countryList(value);
+  } else {
+    showEmptyMessage("Please enter a country name.");
+  }
+}
+
+//  Click on search icon
+searchIcon.addEventListener("click", handleSearch);
+
+//  Press Enter in input field
+userInput.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") {
+    handleSearch();
+  }
+});
+
+// Render university cards
+const resultCard = document.querySelector("#results");
+const resultNum = document.querySelector("#result-count");
+const emptyDiv = document.querySelector(".empty");
+
+function renderUniCards() {
+  if (!universityData.length) {
+    showEmptyMessage("No universities found for the selected country.");
+    return;
+  }
+
   emptyDiv.style.display = "none";
   resultCard.innerHTML = "";
-  resultNum.innerHTML = `Showing ${universityData?.length} results`;
-  for (const data of universityData) {
-    resultCard.innerHTML += `
-      <article class="uni-card">
-        <h3 class="uni-name">${data?.name}</h3>
-        <div class="meta-row">
-          <span class="badge">${data?.country}, ${data?.alpha_two_code}</span>
-          <span class="badge"> ${data?.["state-province"] || "—"}</span>
-        </div>
-        <div class="links">
-          <a
-            href="${data?.web_pages[0]}"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            ${data?.web_pages[0].replace(/^https?:\/\//, "")}
-          </a>
-        </div>
-      </article>
-    `;
+  resultNum.textContent = `Showing ${universityData.length} results`;
+
+  const fragment = document.createDocumentFragment();
+
+  for (const uni of universityData) {
+    const article = document.createElement("article");
+    article.className = "uni-card";
+
+    const title = document.createElement("h3");
+    title.className = "uni-name";
+    title.textContent = uni?.name || "Unnamed University";
+    article.appendChild(title);
+
+    const metaRow = document.createElement("div");
+    metaRow.className = "meta-row";
+
+    const badgeCountry = document.createElement("span");
+    badgeCountry.className = "badge";
+    badgeCountry.textContent = `${uni?.country}, ${uni?.alpha_two_code}`;
+
+    const badgeState = document.createElement("span");
+    badgeState.className = "badge";
+    badgeState.textContent = uni?.["state-province"] || "—";
+
+    metaRow.append(badgeCountry, badgeState);
+    article.appendChild(metaRow);
+
+    const linksDiv = document.createElement("div");
+    linksDiv.className = "links";
+
+    if (uni?.web_pages?.[0]) {
+      const link = document.createElement("a");
+      link.href = uni.web_pages[0];
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = uni.web_pages[0].replace(/^https?:\/\/|\/$/g, "");
+      linksDiv.appendChild(link);
+    }
+
+    article.appendChild(linksDiv);
+    fragment.appendChild(article);
   }
-};
+
+  resultCard.appendChild(fragment);
+}
+
+// Show message when no results or errors
+function showEmptyMessage(message) {
+  resultCard.innerHTML = "";
+  resultNum.textContent = "";
+  emptyDiv.style.display = "block";
+  emptyDiv.textContent = message;
+}
