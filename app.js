@@ -1,8 +1,13 @@
 let universityData = [];
+
 const resultCard = document.querySelector("#results");
 const resultNum = document.querySelector("#result-count");
 const emptyDiv = document.querySelector(".empty");
+
 const badges = document.querySelector(".badges");
+
+const searchIcon = document.querySelector(".icon");
+const userInput = document.querySelector("#userInput");
 
 // Function to fetch universities for a given country
 async function countryList(country) {
@@ -23,10 +28,10 @@ async function countryList(country) {
   }
 }
 
-// Populate dropdown without duplicates
+// Populate populate Country State badges without duplicates
+
 function populateCountryState(data) {
   const addedCountries = new Set();
-  console.log(data);
 
   badges.innerHTML = "";
 
@@ -42,9 +47,6 @@ function populateCountryState(data) {
   }
 }
 
-// Handle search input
-const searchIcon = document.querySelector(".icon");
-const userInput = document.querySelector("#userInput");
 
 // Function to handle search
 function handleSearch() {
@@ -66,32 +68,38 @@ userInput.addEventListener("keyup", (e) => {
   }
 });
 
-// Event delegation for badge clicks
+// Render university cards via state
+
 badges.addEventListener("click", function (e) {
   if (e.target.classList.contains("badge")) {
-    for (stateData of universityData) {
-      if (e.target.textContent === stateData["state-province"]) {
-        console.log(e.target.textContent);
-      }
-    }
+    const selectedState = e.target.textContent;
+    resultNum.textContent = "";
+
+    const filteredData = universityData.filter(
+      (uni) => uni["state-province"] === selectedState
+    );
+
+    resultNum.textContent = `Showing ${filteredData.length} results`;
+
+    renderUniCards(filteredData);
   }
 });
 
 // Render university cards
 
-function renderUniCards() {
-  if (!universityData.length) {
+function renderUniCards(data = universityData) {
+  if (!data.length) {
     showEmptyMessage("No universities found for the selected country.");
     return;
   }
 
   emptyDiv.style.display = "none";
   resultCard.innerHTML = "";
-  resultNum.textContent = `Showing ${universityData.length} results`;
+  resultNum.textContent = `Showing ${data.length} results`;
 
   const fragment = document.createDocumentFragment();
 
-  for (const uni of universityData) {
+  for (const uni of data) {
     const article = document.createElement("article");
     article.className = "uni-card";
 
