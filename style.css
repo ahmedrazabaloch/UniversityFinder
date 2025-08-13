@@ -258,6 +258,9 @@ body {
   line-height: 1;
   cursor: pointer;
 }
+.badges.meta-row {
+  justify-content: center;
+}
 .links {
   display: flex;
   flex-wrap: wrap;

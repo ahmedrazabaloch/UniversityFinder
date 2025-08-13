@@ -1,4 +1,8 @@
 let universityData = [];
+const resultCard = document.querySelector("#results");
+const resultNum = document.querySelector("#result-count");
+const emptyDiv = document.querySelector(".empty");
+const badges = document.querySelector(".badges");
 
 // Function to fetch universities for a given country
 async function countryList(country) {
@@ -22,7 +26,6 @@ async function countryList(country) {
 // Populate dropdown without duplicates
 function populateCountryState(data) {
   const addedCountries = new Set();
-  const badges = document.querySelector(".badges");
   console.log(data);
 
   badges.innerHTML = "";
@@ -63,10 +66,18 @@ userInput.addEventListener("keyup", (e) => {
   }
 });
 
+// Event delegation for badge clicks
+badges.addEventListener("click", function (e) {
+  if (e.target.classList.contains("badge")) {
+    for (stateData of universityData) {
+      if (e.target.textContent === stateData["state-province"]) {
+        console.log(e.target.textContent);
+      }
+    }
+  }
+});
+
 // Render university cards
-const resultCard = document.querySelector("#results");
-const resultNum = document.querySelector("#result-count");
-const emptyDiv = document.querySelector(".empty");
 
 function renderUniCards() {
   if (!universityData.length) {
