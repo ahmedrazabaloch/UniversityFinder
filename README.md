@@ -3,7 +3,7 @@
 This project demonstrates how to work with APIs in JavaScript by fetching data and displaying it dynamically in a web interface.
 
 ## 🔗 Live Demo
-[Click here to view the project]([https://your-username.github.io/API_Practices/](https://github.com/ahmedrazabaloch/UniversityFinder))
+[Click here to view the project](https://universityfinder-six.vercel.app/)
 
 ## 📂 Project Structure
 ```
